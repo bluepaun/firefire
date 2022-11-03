@@ -1,0 +1,36 @@
+{
+  "name": "firefire",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/bluepaun/firefire.git",
+  "author": "bluepaun <bluepaun@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "gulp dev",
+    "build": "gulp build",
+    "deploy": "gulp deploy"
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
+    "@babel/register": "^7.18.9",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "del": "^7.0.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-csso": "^4.0.1",
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-image": "^6.3.1",
+    "gulp-pug": "^5.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-webserver": "^0.9.1",
+    "sass": "^1.55.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}
