@@ -82,7 +82,20 @@ const watch = () => {
 const gitDeploy = () => gulp.src("./build/**/*").pipe(ghPages());
 const cleanPublish = async () => await deleteSync([".publish"]);
 
-const webServer = () => gulp.src("build").pipe(webserver({ livereload: true }));
+const webServer = () =>
+  gulp.src("build").pipe(
+    webserver({
+      livereload: true,
+      middleware: [
+        (req, res, next) => {
+          if (req.url !== "/" && !req.url.includes(".")) {
+            req.url = req.url + ".html";
+          }
+          next();
+        },
+      ],
+    })
+  );
 
 const prepare = gulp.series([clean]);
 export const build = gulp.series([
