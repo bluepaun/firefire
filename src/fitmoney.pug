@@ -1,19 +1,28 @@
 extends layout/_base
 
+block jsscript
+  script(defer src="js/fitmoney.js")
+
 block content
   h1 fitmoney
-    form
-      label(for="") 돈을 입력하세요. (돈 입력 후 enter입력 또는 add 클릭)
-      input(type="text")
-      button add
-    form
-      label(for="") 여러 개 입력하는 곳 (입력 후enter 또는 add 클릭)</label>
-      textarea
-      button add
-
+  div
+    label(for="goal") 목표 돈을 입력하세요.
+    input#goal(type="number" value="100000" min="0")
+  form.moneyForm
+    label(for="money") 돈을 입력하세요. (입력 후 enter 또는 add 클릭)
+    input#money(type="number" min="0")
+    button add
+  form.moneysForm
+    label(for="moneys") 여러 개 입력하는 곳 (입력후 add 클릭)
+    textarea#moneys
+    button add
+  div.display
+    h3 현재목표 돈: 100,000
     ul
-    button 모두 지우기
-    button 100,000원 조합 찾기
+    button#deleteAll 모두 지우기
+    button#run 조합 찾기
+  div.resultDisplay
+    h2 결과
     div
-      h2 결과
-      ul
+
+

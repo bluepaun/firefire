@@ -12,6 +12,7 @@ import source from "vinyl-source-stream";
 import buffer from "vinyl-buffer";
 import ghPages from "gulp-gh-pages";
 import GulpImage from "gulp-image";
+import filechecker from "./gulp_help/fileChecker.js";
 
 const scss = gsass(sass);
 
@@ -27,7 +28,7 @@ const routes = {
     watch: "src/scss/**/*.scss",
   },
   js: {
-    src: "src/js/app.js",
+    src: "src/js/*.js",
     dest: "build/js",
     watch: "src/js/**/*.js",
   },
@@ -56,19 +57,12 @@ const buildScss = () =>
     .pipe(csso())
     .pipe(gulp.dest(routes.scss.dest));
 
-const buildJs = () =>
-  browserify(routes.js.src)
-    .transform("babelify", { presets: ["@babel/preset-env"] })
-    .bundle()
-    .on("error", function (err) {
-      console.error(err);
-      this.emit("end");
-    })
-    .pipe(source("app.js"))
-    .pipe(buffer())
-    // .pipe(sourcemaps.init({ loadMaps: true }))
-    // .pipe(sourcemaps.write("./"))
+const buildJs = () => {
+  return gulp
+    .src(routes.js.src)
+    .pipe(filechecker())
     .pipe(gulp.dest(routes.js.dest));
+};
 
 const buildImg = () =>
   gulp.src(routes.img.src).pipe(GulpImage()).pipe(gulp.dest(routes.img.dest));

@@ -30,7 +30,9 @@
     "gulp-sass": "^5.1.0",
     "gulp-webserver": "^0.9.1",
     "sass": "^1.55.0",
+    "through2": "^4.0.2",
     "vinyl-buffer": "^1.0.1",
+    "vinyl-contents": "^2.0.0",
     "vinyl-source-stream": "^2.0.0"
   },
   "resolutions": {
