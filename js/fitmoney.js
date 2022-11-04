@@ -147,18 +147,18 @@ const GOAL_STRING = "현재목표 돈";
 const callbacks = {
   runMatch: (moneys, goal) => {}
 };
-let goal = parseInt(goalInput.value);
+let goal = Number(goalInput.value);
 let moneys = [];
 goalInput.addEventListener("change", () => {
-  goal = parseInt(goalInput.value);
+  goal = Number(goalInput.value);
   displayGoalh3.innerText = `${GOAL_STRING} : ${goal.toLocaleString("en-US")}`;
 });
 moneyForm.addEventListener("submit", e => {
   e.preventDefault();
   const target = e.target;
   const input = target.querySelector("input");
-  if (!isNaN(parseInt(input.value))) {
-    addList(parseInt(input.value));
+  if (!isNaN(Number(input.value))) {
+    addList(Number(input.value));
   }
   input.value = "";
 });
@@ -166,17 +166,16 @@ moneysForm.addEventListener("submit", e => {
   e.preventDefault();
   const target = e.target;
   const textarea = target.querySelector("textarea");
-  console.log(textarea.value);
   const str = textarea.value;
   textarea.value = "";
   const filteredArr = str.split(/\r?\n/).filter(function (e) {
-    const t = parseInt(e);
+    const t = Number(e);
     if (t !== 0 && isNaN(t) === false) {
       return t;
     }
   });
   filteredArr.forEach(function (e) {
-    const t = parseInt(e);
+    const t = Number(e);
     addList(t);
   });
 });
@@ -225,15 +224,12 @@ runBtn.addEventListener("click", () => {
   callbacks.runMatch(moneys, goal);
 });
 function deleteMoneys(arr) {
-  console.log(arr);
   const lis = displayUl.querySelectorAll("li");
   lis.forEach(li => {
     const delbtn = li.querySelector("button");
     const id = parseInt(delbtn.dataset.id);
-    console.log(id);
     for (let i = 0; i < arr.length; i++) {
       if (arr[i].id === id) {
-        console.log("click", id);
         delbtn.click();
         break;
       }
@@ -253,7 +249,7 @@ function createResultDiv(g, num, arr) {
     const delArr = [];
     lis.forEach(l => {
       const moneyobj = {};
-      moneyobj.num = parseInt(l.innerText);
+      moneyobj.num = Number(l.innerText);
       moneyobj.id = parseInt(l.dataset.id);
       delArr.push(moneyobj);
     });
@@ -282,7 +278,6 @@ function showResult(g, match) {
     num,
     arr
   } = match;
-  console.log(g, num, arr);
   const reDiv = createResultDiv(g, num, arr);
   resultDiv.appendChild(reDiv);
 }
