@@ -46,18 +46,40 @@ function deepCopyObject(inObject) {
   }
   return outObject;
 }
+let hashMap = {};
 function pushIfNotExist(arr, obj) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i].num === obj.num) {
-      return;
-    }
+  if (hashMap[obj.num]) {
+    return;
   }
+  hashMap[obj.num] = obj;
+  /* console.log("hashMap", hashMap); */
   arr.push(obj);
+}
+function getArr(obj) {
+  /* console.log("obj", obj); */
+  /* console.log("hashMap", hashMap); */
+  const arr = [];
+  /* arr.push(obj.data); */
+  let cur = obj;
+  let next = obj.prev;
+  arr.push(cur.data);
+  while (next > -1) {
+    cur = hashMap[next];
+    arr.push(cur.data);
+    next = cur.prev;
+  }
+  return arr;
 }
 function findMatch(moneys, goal) {
   let leftTotalSum = 0;
+  hashMap = {};
   moneys.forEach(function (e) {
     leftTotalSum += e.num;
+  });
+  console.log("moneys lenght", moneys.length);
+  console.log("total sum", leftTotalSum);
+  moneys.sort((a, b) => {
+    return b.num - a.num;
   });
   let target = goal;
   let preArr = [];
@@ -65,21 +87,25 @@ function findMatch(moneys, goal) {
     const newArr = [];
     for (let j = 0; j < preArr.length; j++) {
       if (preArr[j].num + leftTotalSum < target) {
+        newArr.push(preArr[j]);
         continue;
+      } else {
+        newArr.push(preArr[j]);
       }
-      pushIfNotExist(newArr, preArr[j]);
       if (preArr[j].num >= target) {
         break;
       }
-      const newNum = deepCopyObject(preArr[j]);
-      newNum.num += moneys[i].num;
-      newNum.list.push(moneys[i]);
+      const newNum = {};
+      newNum.prev = preArr[j].num;
+      newNum.data = moneys[i];
+      newNum.num = preArr[j].num + moneys[i].num;
       pushIfNotExist(newArr, newNum);
     }
     if (leftTotalSum >= target) {
       pushIfNotExist(newArr, {
         num: moneys[i].num,
-        list: [moneys[i]]
+        prev: -1,
+        data: moneys[i]
       });
     }
     leftTotalSum -= moneys[i].num;
@@ -87,6 +113,19 @@ function findMatch(moneys, goal) {
     preArr.sort(function (a, b) {
       return a.num - b.num;
     });
+    /* console.log("preArr1", preArr); */
+
+    let exactlyMatch = false;
+    for (let idx = 0; idx < preArr.length; idx++) {
+      if (preArr[idx].num === target) {
+        exactlyMatch = true;
+        break;
+      }
+    }
+    if (exactlyMatch) {
+      /* console.log("exactlyMatch!!!!"); */
+      break;
+    }
   }
   let min = 9876543210;
   let minId = -1;
@@ -107,12 +146,13 @@ function findMatch(moneys, goal) {
   const minobj = {};
   if (minId !== -1) {
     minobj.num = preArr[minId].num;
-    minobj.arr = preArr[minId].list;
+    minobj.arr = getArr(preArr[minId]);
   }
+  console.log("minobj", minobj);
   const secondMinobj = {};
   if (sminId !== -1) {
     secondMinobj.num = preArr[sminId].num;
-    secondMinobj.arr = preArr[sminId].list;
+    secondMinobj.arr = getArr(preArr[sminId]);
   }
   callbacks.matchResult({
     goal: target,
@@ -157,7 +197,7 @@ moneyForm.addEventListener("submit", e => {
   e.preventDefault();
   const target = e.target;
   const input = target.querySelector("input");
-  if (!isNaN(Number(input.value))) {
+  if (input.value !== "" && !isNaN(Number(input.value))) {
     addList(Number(input.value));
   }
   input.value = "";

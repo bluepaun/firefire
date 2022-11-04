@@ -27,7 +27,8 @@ moneyForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const target = e.target;
   const input = target.querySelector("input");
-  if (!isNaN(Number(input.value))) {
+
+  if (input.value !== "" && !isNaN(Number(input.value))) {
     addList(Number(input.value));
   }
   input.value = "";
